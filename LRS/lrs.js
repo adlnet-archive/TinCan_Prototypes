@@ -18,15 +18,15 @@ function handleRequest(request, response, storage) {
 	var handled, ii, requestContext, urlParts, path, authUser,
 		queryString = {};
 
-	response.setHeader('Content-Type', 'text/plain');
-	response.setHeader('Access-Control-Allow-Origin', '*');
-	response.setHeader('Access-Control-Allow-Methods', 'PUT,DELETE');
-	response.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-
+	response.setHeader('Content-Type', 'application/json');
+	response.setHeader('Access-Control-Allow-Origin', (request.headers.origin || "*"));
+	response.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS,PUT,DELETE');
+	response.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,Origin,Accept');
+	response.setHeader('Access-Control--Max-Age','1728000')
 	try {
 		util.storeRequestBody(request);
 		authUser = util.getAuthenticatedUser(request);
-		if (request.method === 'OPTIONS') {
+		if (request.method.toUpperCase() === 'OPTIONS') {
 			response.end();
 		} else if (!authUser) {
 			response.statusCode = 401;
